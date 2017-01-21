@@ -28,9 +28,71 @@ Clade_check searches for these instances.
 
 If given many such clades to check, researchers can assess the number of these clades that are violated and decide on the weight of evidence necessary to remove of re-visit the analysis of that gene family.
 
+Care must be taken choosing the clades to be tested and in the designing of the study, to include taxa that allows this test to be made.
+
 ## Installation
 
 To install the software download the file "clade_check.c" (or if you have git installed use the command:
 
 ```
+git clone https://github.com/ChrisCreevey/clade_check.git
+```
+
+Then (on a unix-based operationing system) type the command:
+
+```
+cc clade_check.c -o clade_check -lm
+```
+
+It is advisable to copy "clade_check" to somewhere on your path (like `~/bin` ) in order to make sure that it is availalbe everywhere on your system.
+
+
+## Usage
+
+Usage: `clade_check -f [phylip formatted tree file] -c [clade file] `
+
+  Where: [phylip formatted tree file] is a phylip formatted file of trees to be assessed
+  
+  [clade file] is a file lists of taxa in each line (space seperated) that are to be checked for monophylies.
+  
+Two example files are provided:
+
+1) `trees.ph` which contains the trees to be tested:
+
+```
+(((a,(b,(c,d))),f),e);
+(((a,(b,(e,d))),c),g);
+```
+
+2) `clades.txt` which contains the clades to be tested (one clade per line, with the taxa sperated by spaces)
+
+```
+c d b
+a f e
+c d a
+c d
+c g a
+g d
+```
+
+The output will be named `[phylip formatted tree file].scores.txt` and will have the following format:
+
+```
+Tree number size    Clade 1 Clade 2 Clade 3 Clade 4 Clade 5 Clade 6
+Tree 1      6       1       1       0       1       1       1
+Tree 2      6       0       1       0       1       1       1
+```
+Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clade x` is the clade definied by the xth line of the clade file.
+
+In this example Clades 3 defined as having the monophyly of "c f e" was violated in both tree 1 and tree 2.
+
+In this result Tree 2 violated 2 of the clades and tree 1 violoated 1.
+
+## Caveats
+
+This tool will work with phylogenies with branch lengths and node labels (like bootstrap supports) and ignores both. However it assumes that there are no other modifications to the standard phylip formatting. It does not work with tree labels (in "[]" after the ";" in the tree).
+
+
+
+
 
