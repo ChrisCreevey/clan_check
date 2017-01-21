@@ -25,9 +25,9 @@ void unroottree(char * tree);
 
 int main (int argc, char *argv[])
   {
-  char *treefilename=NULL, *cladefilename=NULL, c, **clades=NULL, **trees=NULL, *tree=NULL, *constraint=NULL, taxa[1000][1000], clanlist[1000][1000], *token=NULL;
+  char *treefilename=NULL, *cladefilename=NULL, outfilename[10000], c, **clades=NULL, **trees=NULL, *tree=NULL, *constraint=NULL, taxa[1000][1000], clanlist[1000][1000], *token=NULL, string[1000], *testtree=NULL, treename[1000];
   FILE *treefile=NULL, *cladefile=NULL, *outfile=NULL;
-  int fflag=0, cflag=0, i=0, j=0, k=0, l=0, m=0, numclades=0, numtrees=0, linelength=0, treelength=0, numtaxa=0, numintree=0;
+  int fflag=0, cflag=0, i=0, j=0, k=0, g=0, l=0, m=0, n=0, numclades=0, numtrees=0, linelength=0, treelength=0, numtaxa=0, numintree=0, numinconstraint=0, foundclade = FALSE, foundtaxa=FALSE;
 
   if(argc < 2)
   	{
@@ -68,6 +68,16 @@ int main (int argc, char *argv[])
 	    fprintf(stderr, "Error: Cannot open clade file %s\n", cladefilename);
 	    exit(1);
 	    }
+	outfilename[0] = '\0';
+	strcpy(outfilename, treefilename);
+	strcat(outfilename, ".scores.txt");
+	if((outfile = fopen(outfilename, "w")) == '\0')   /* check to see if the file is there */
+	    {                          /* Open the fundamental tree file */
+	    fprintf(stderr, "Error: Cannot open output file %s\n", outfilename);
+	    exit(1);
+	    }
+	fprintf(outfile, "Tree number");
+
 
     /* read in how many lines (clades) are defined in the clade file so we can assign the arrays */
     while(!feof(cladefile))
@@ -78,7 +88,9 @@ int main (int argc, char *argv[])
 	    numclades++;
 	    }
 	numclades--;
-	printf("numclades = %d\tlinlength = %d\n", numclades, linelength);
+	printf("number of clades to check = %d\n", numclades);
+	for(i=0; i<numclades; i++) fprintf(outfile, "\tClade %d", i);
+	fprintf(outfile, "\n");
 
 	rewind(cladefile);
 
@@ -104,7 +116,7 @@ int main (int argc, char *argv[])
 	    	}
 	    if(i<numclades) {
 	    	clades[i][j]='\0';
-	    	printf("clade = %s\n", clades[i]);
+	    	/*printf("clade = %s\n", clades[i]);*/
 	    	}
 	    i++;
 	    }
@@ -119,7 +131,7 @@ int main (int argc, char *argv[])
 	    numtrees++;
 	    }
 	numtrees--;
-	printf("numtrees=%d\ttreelength=%d\n",numtrees, treelength);
+	printf("number of trees to check =%d\n",numtrees);
 	rewind(treefile);
 
 	/* define the trees array */
@@ -129,7 +141,7 @@ int main (int argc, char *argv[])
 		trees[i]=malloc((treelength+2)*sizeof(char));
 		trees[i][0]='\0';
 		}
-	tree=malloc((treelength+2)*sizeof(char));
+	tree=malloc((treelength*3)*sizeof(char));
 	tree[0] = '\0';
 	/* read in the trees */
 	i=0;
@@ -148,7 +160,7 @@ int main (int argc, char *argv[])
 	    	{
 	    	trees[i][j]=';';
 	    	trees[i][j+1]= '\0';
-	    	printf("tree = %s\n", trees[i]);
+	    	/*printf("tree = %s\n", trees[i]);*/
 	    	}	
 	    i++;
 	    }
@@ -159,9 +171,34 @@ int main (int argc, char *argv[])
 
 	for(k=0; k<numtrees; k++)
 		{
-		strcpy(tree, trees[k]);
-		unroottree(tree); /* unroot tree if necessary */
+		/*printf("k=%d\n", k);*/
+		fprintf(outfile, "Tree %d", k+1);
 
+		i=0; m=0;
+		while(trees[k][i] != ';')
+			{
+			switch(trees[k][i])
+				{
+				case '(':
+				case ',':
+				case ')':
+				case ':':
+					tree[m]=' '; m++;
+					tree[m]=trees[k][i]; m++; i++;
+					tree[m]=' '; m++;					
+					break;
+				default:
+					tree[m] = trees[k][i];
+					i++; m++;
+					break;
+				}
+			}
+		tree[m]=';';
+		tree[m+1]='\0';
+
+
+		unroottree(tree); /* unroot tree if necessary */
+		/*printf("modified tree =:%s\n", tree);*/
 		/*identify all the taxa in the tree */
 		i=0; m=0; numtaxa=0;
 		while(tree[i] != ';')
@@ -170,18 +207,19 @@ int main (int argc, char *argv[])
 				{
 				case '(':
 				case ',':
+				case ' ':
 					i++;
 					break;
 				case ':':
-					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ')'  && tree[i] != ';') i++;
+					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ')'  && tree[i] != ';'&& tree[i] != ' ') i++;
 					break;
 				case ')':
-					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ';' && tree[i] != ':') i++;
+					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ';' && tree[i] != ':' ) i++;
 					break;
 				default:
 					l=0;
 
-					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ')'  && tree[i] != ':') 
+					while(tree[i] != '(' && tree[i] != ',' && tree[i] != ')'  && tree[i] != ':' && tree[i] != ' ') 
 						{
 						taxa[numtaxa][l]= tree[i];
 						i++; l++;
@@ -192,73 +230,145 @@ int main (int argc, char *argv[])
 				}
 
 			}
-		printf("number of taxa in tree are %d\n", numtaxa);
-		for(i=0; i<numtaxa; i++) printf("taxa %d = %s\n", i, taxa[i]);
+		/*printf("number of taxa in tree are %d\n", numtaxa);*/
+		/*for(i=0; i<numtaxa; i++) printf("taxa %d = >%s<\n", i, taxa[i]);*/
 
  		/* go through all the clades from the clades file */
+		string[0]='\0';
+
 		for(n=0; n<numclades; n++)
 			{	
+			/*printf("n=%d\n", n);*/
 			/* identify the taxa from this clade that are actually in the tree */
+			strcpy(string, clades[n]);
 			numintree=0;
-			token = strtok(clades[n], " "); /* get the first species ID from the Calde definition */
+			token = strtok(string, " "); /* get the first species ID from the Calde definition */
 			j=0;
 			while(token != NULL )
 				{	
-				for()
-				token = strtok(NULL, " ");
-				}
-		    for(i=0; i<6; i++) 
-
-			/* Extract all the clans from the tree */
-			i=0;
-			while(tree[i] != ';')
-				{
-				if( tree[i] == '(' && i !=0)
-					{
-					  /* identify all the taxa IDs in this split */
-					  k=i; j=0;
-					  constraint[j] = '('; j++;
-					   l=1; k++;
-					  while((l != 0 || tree[k-1] != ')') && tree[k] != ';' )   /* CHANGED RECENTLY FROM while(l != 0 && tree[k-1] != ')' && tree[k] != ';' ) */
-					    {
-					    switch(tree[k])
-					      {
-					      case '(':
-					        l++;
-					        k++;
-					        break;
-					      case ')':
-					        l--;
-					        k++;
-					        break;
-					      case ':':
-					        while(tree[k] != '(' && tree[k] != ')' && tree[k] != ',' && tree[k] != ';' ) k++;
-					        break;
-					      case ',':
-					        k++;
-					        break;
-					      default:
-					        while(tree[k] != ',' && tree[k] != '(' && tree[k] != ')' && tree[k] != ':' )
-					            {
-					            constraint[j] = tree[k];
-					            k++; j++;
-					            }
-					        constraint[j] = ',';
-					        j++;
-					        break;
-					      }
-					    }
-					  constraint[j-1] = ')'; /* overwrites the extra comma at the end */
-					  constraint[j] = '\0';
-
-					  printf("%s\n", constraint);
-
+				for(i=0; i<numtaxa; i++)
+					{	
+					if(strcmp(token, taxa[i]) == 0)
+						{	
+						clanlist[numintree][0] = '\0';
+						strcpy(clanlist[numintree], token);
+						/*printf("copying %s\n", clanlist[numintree]);*/
+						numintree++;
+						i=numtaxa;
+						}
 					}
-				i++;
+				token = strtok(NULL, " ");
+				} /* clanlist now contains a list of all the taxa that are in both the clade and the tree */
+			foundclade=FALSE;
+			if(numintree > 1) /* there is no point in looking for clades of taxa if only onw (or none) of them are in the tree */
+		    	{
+
+				/* Extract all the clans from the tree */
+				i=0;
+				while(tree[i] != ';' && !foundclade)
+					{
+					if( tree[i] == '(' && i !=0)
+						{
+						  /* identify all the taxa IDs in this split */
+						  g=i; j=0;
+						  constraint[j] = '('; j++; constraint[j] = ' ';  j++;
+						   l=1; g++; numinconstraint=0;
+						  while((l != 0 || tree[g-1] != ')') && tree[g] != ';' && !foundclade)   /* CHANGED RECENTLY FROM while(l != 0 && tree[k-1] != ')' && tree[k] != ';' ) */
+						    {
+						    switch(tree[g])
+						      {
+						      case '(':
+						        l++;
+						        g++;
+						        break;
+						      case ')':
+						        l--;
+						        g++;
+						        break;
+						      case ':':
+						        while(tree[g] != '(' && tree[g] != ')' && tree[g] != ',' && tree[g] != ';' ) g++;
+						        break;
+						      case ',':
+						      case ' ':
+						        g++;
+						        break;
+						      default:
+						        while(tree[g] != ',' && tree[g] != '(' && tree[g] != ')' && tree[g] != ':' )
+						            {
+						            constraint[j] = tree[g];
+						            g++; j++;
+						            }
+						        numinconstraint++;
+						        constraint[j] = ' '; j++;
+						        constraint[j] = ','; j++;
+						        constraint[j] = ' '; j++;
+						        break;
+						      }
+						    }
+						  constraint[j-1] = ' '; /* overwrites the extra comma at the end */
+
+						  constraint[j] = ')'; j++;
+						  constraint[j] = '\0';
+						  /*printf("%s\n", constraint);*/
+
+						  /* compare this constraint to the currently defined clade from the file [ in the array cladelist ] */
+						  foundclade=FALSE;
+						  /* if the number of taxa in or outside this constraint is less or more then the number of taxa in the clade list, then there is no point checking */
+						  if(numinconstraint == numintree)
+						  	{
+						  	/*printf("checking within\n");	*/
+						  	/* check to see if the taxa are the same inside the constraint as in the clade */
+						  	foundtaxa=TRUE;
+						  	g=0;
+						  	for(l=0; l<numintree; l++) /*for all taxa in the taxalist */
+						  		{
+						  		string[0]=' ';
+						  		string[1]='\0';
+						  		strcat(string, clanlist[l]);
+						  		strcat(string, " ");
+						  		/*printf("looking for \"%s\" in %s\n", string, constraint);*/
+						  		
+						  		if(strstr(constraint,string) == '\0')
+						  			{	
+						  			/*printf("didn't find it\n");*/
+						  			foundtaxa=FALSE;
+						  			}
+						  		else
+						  			{
+						  			/*printf("found it\n");	*/
+						  			g++;  /* this will equal the number of taxa from the clades that are in the constaint */
+						  			}
+						  		}
+						  	if(foundtaxa == TRUE) foundclade = TRUE;
+						  	}
+						  if((numtaxa-numinconstraint) == numintree && !foundclade && g == 0)
+						  	{	
+						  	/* Check to see if the taxa outside the constraint are the same as in the clade */
+						  	/*printf("checking outside\n");*/
+							foundclade = TRUE; /* this is because if k=0, then none of the clade taxa were in the constaint, and if the number of remaining taxa in the tree == number of taxa in clade, then they must be all the taxa we are looking for */
+						  	}
+						 						  
+
+						}
+					i++;
+					}
 				}
+			  if(foundclade) 
+			  	{
+			  		fprintf(outfile, "\t1");
+			  		/*printf("found %s\n", clades[n]);*/
+			  	}
+			  else 
+			  	{
+			  		fprintf(outfile, "\t0");
+			  		/*printf("did not find %s\n", clades[n]);*/
+			  	}
+
 			}
+		fprintf(outfile, "\n");
 		}
 	printf("finished\n");
+	fclose(outfile);
 	/* free up all memory */
 
 	for(i=0; i<numclades; i++)
