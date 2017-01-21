@@ -93,7 +93,7 @@ Tree 2      6       0       1       0       1       1       1
 ```
 Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clade x` is the clade definied by the xth line of the clade file.
 
-In this example Clades 3 defined as having the monophyly of "c f e" was violated in both tree 1 and tree 2.
+In this example Clades 3 defined as having the monophyly of "c d a" was violated in both tree 1 and tree 2.
 
 In this result Tree 2 violated 2 of the clades and tree 1 violoated 1.
 
