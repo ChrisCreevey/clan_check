@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
 
   if(argc < 2)
   	{
-    printf("\n\nclade_check: Assess phylogenies for compatibility with defined monophylies\n\n Usage: \"clade_check -f <phylip formatted tree file> -c <clade file> \"\n\n\tWhere: <phylip formatted tree file> is a phylip formatted file of trees to be assessed\n\t<clade file> is a file lists of taxa in each line (space seperated) that are to be checked for monophylies\n\n");
+    printf("\n\nclan_check: Assess phylogenies for compatibility with defined clans\n\n Usage: \"clan_check -f <phylip formatted tree file> -c <clan file> \"\n\n\tWhere: <phylip formatted tree file> is a phylip formatted file of trees to be assessed\n\t<clan file> is a file lists of taxa in each line (space seperated) that belong to the clan to be tested\n\n");
   	}
   while ((c = getopt(argc, argv, "f:c:h")) != -1)
     {   
@@ -46,7 +46,7 @@ int main (int argc, char *argv[])
         treefilename = optarg;
         break;
       case 'h':
-	    printf("\n\nclade_check: Assess phylogenies for compatibility with defined monophylies\n\n Usage: \"clade_check -f <phylip formatted tree file> -c <clade file> \"\n\n\tWhere: <phylip formatted tree file> is a phylip formatted file of trees to be assessed\n\t<clade file> is a file lists of taxa in each line (space seperated) that are to be checked for monophylies\n\n");
+	    printf("\n\nclan_check: Assess phylogenies for compatibility with defined monophylies\n\n Usage: \"clan_check -f <phylip formatted tree file> -c <clan file> \"\n\n\tWhere: <phylip formatted tree file> is a phylip formatted file of trees to be assessed\n\t<clan file> is a file lists of taxa in each line (space seperated) that belong to the clan to be tested\n\n");
         exit(1);
         break;
       }
@@ -65,7 +65,7 @@ int main (int argc, char *argv[])
 	    }
 	if((cladefile = fopen(cladefilename, "r")) == '\0')   /* check to see if the file is there */
 	    {                          /* Open the fundamental tree file */
-	    fprintf(stderr, "Error: Cannot open clade file %s\n", cladefilename);
+	    fprintf(stderr, "Error: Cannot open clan file %s\n", cladefilename);
 	    exit(1);
 	    }
 	outfilename[0] = '\0';
@@ -88,8 +88,8 @@ int main (int argc, char *argv[])
 	    numclades++;
 	    }
 	numclades--;
-	printf("number of clades to check = %d\n", numclades);
-	for(i=0; i<numclades; i++) fprintf(outfile, "\tClade %d", i+1);
+	printf("number of clans to check = %d\n", numclades);
+	for(i=0; i<numclades; i++) fprintf(outfile, "\tClan %d", i+1);
 	fprintf(outfile, "\n");
 
 	rewind(cladefile);
