@@ -45,7 +45,7 @@ If only 1 of the taxa from a clan are in the tree, clan_check will assume that t
 To install the software download the file "clan_check.c" (or if you have git installed use the command:
 
 ```
-git clone https://github.com/ChrisCreevey/clade_check.git
+git clone https://github.com/ChrisCreevey/clanf_check.git
 ```
 
 Then (on a unix-based operationing system) type the command:
@@ -76,7 +76,7 @@ Two example files are provided:
 These trees can be rooted or unrooted. `clan_check` will unroot all rooted trees before carrying out the analysis.
 
 
-2) `clades.txt` which contains the clans to be tested (one clan per line, with the taxa sperated by spaces)
+2) `clans.txt` which contains the clans to be tested (one clan per line, with the taxa sperated by spaces)
 
 ```
 c d b
