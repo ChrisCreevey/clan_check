@@ -1,9 +1,12 @@
-# clade_check
-Check trees for compatibility with defined monophyletic groups - "The incontrovertible clan test" 
+# clan_check
+Check trees for compatibility with defined monophyletic [edit - not right terminology ] groups - "The incontrovertible clan test" 
 
 ## Background
 ###What does it do?
-Clade_check analyses single-copy phylogenetic trees to assess if they violate clans defined by the user (Strictly speaking they are clans as the trees are unrooted).
+Clan_check analyses single-copy phylogenetic trees to assess if they violate clans* defined by the user. 
+
+*see the following paper for a definiton of a "clan"
+Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.
 
 The user provides a file of phylogenetic trees and a file containing the definitions of clans to be tested.
 
@@ -24,22 +27,22 @@ An example of this is, if I was carrying out a phylogenomic study of the fishes 
 
 In this case the mammals are an incontrovertible clan. If the mammals are paraphyletic with the fishes, then it is very likely that one of the internal branches of the tree represents a duplication and not a speciation event, and so they are not all orthologs.
 
-Clade_check searches for these instances.
+Clan_check searches for these instances.
 
 If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove of re-visit the analysis of that gene family.
 
 Care must be taken choosing the clans to be tested and in the designing of the study, to include taxa that allows this test to be made.
 
-You can provide trees and clans of any size and `clade_check` will search for the appropriate sub-set of the clans defined.
+You can provide trees and clans of any size and `clan_check` will search for the appropriate sub-set of the clans defined.
 
 For example: 
->if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clade_check will search for monophylies of `C` and `D` only. 
+>if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clan_check will search for monophylies of `C` and `D` only. 
 
-If only 1 of the taxa from a clan are in the tree, clade_check will assume that the clan is not violated, and return a "1" for that test (see output files detail below).
+If only 1 of the taxa from a clan are in the tree, clan_check will assume that the clan is not violated, and return a "1" for that test (see output files detail below).
 
 ## Installation
 
-To install the software download the file "clade_check.c" (or if you have git installed use the command:
+To install the software download the file "clan_check.c" (or if you have git installed use the command:
 
 ```
 git clone https://github.com/ChrisCreevey/clade_check.git
@@ -48,19 +51,19 @@ git clone https://github.com/ChrisCreevey/clade_check.git
 Then (on a unix-based operationing system) type the command:
 
 ```
-cc clade_check.c -o clade_check -lm
+cc clan_check.c -o clan_check -lm
 ```
 
-It is advisable to copy "clade_check" to somewhere on your path (like `~/bin` ) in order to make sure that it is availalbe everywhere on your system.
+It is advisable to copy "clan_check" to somewhere on your path (like `~/bin` ) in order to make sure that it is availalbe everywhere on your system.
 
 
 ## Usage
 
-Usage: `clade_check -f [phylip formatted tree file] -c [clade file] `
+Usage: `clan_check -f [phylip formatted tree file] -c [clan file] `
 
   Where: [phylip formatted tree file] is a phylip formatted file of trees to be assessed
   
-  [clade file] is a file lists of taxa in each line (space seperated) that are to be checked for monophylies.
+  [clan file] is a file lists of taxa in each line (space seperated) that are to be checked for monophylies.
   
 Two example files are provided:
 
@@ -70,7 +73,7 @@ Two example files are provided:
 (((a,(b,(c,d))),f),e);
 (((a,(b,(e,d))),c),g);
 ```
-These trees can be rooted or unrooted. `clade_check` will unroot all rooted trees before carrying out the analysis.
+These trees can be rooted or unrooted. `clan_check` will unroot all rooted trees before carrying out the analysis.
 
 
 2) `clades.txt` which contains the clans to be tested (one clan per line, with the taxa sperated by spaces)
