@@ -30,7 +30,7 @@ In this case the mammals are an incontrovertible clan. If the mammals are paraph
 
 Clan_check searches for these instances.
 
-If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove of re-visit the analysis of that gene family.
+If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove or re-visit the analysis of that gene family.
 
 Care must be taken choosing the clans to be tested and in the designing of the study, to include taxa that allows this test to be made.
 
@@ -46,7 +46,7 @@ If only 1 of the taxa from a clan are in the tree, clan_check will assume that t
 To install the software download the file "clan_check.c" (or if you have git installed use the command:
 
 ```
-git clone https://github.com/ChrisCreevey/clanf_check.git
+git clone https://github.com/ChrisCreevey/clan_check.git
 ```
 
 Then (on a unix-based operationing system) type the command:
