@@ -5,8 +5,8 @@ Check trees for compatibility with defined monophyletic [edit - not right termin
 ###What does it do?
 Clan_check analyses single-copy phylogenetic trees to assess if they violate clans* defined by the user. 
 
-*see the following paper for a definiton of a "clan"
-Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.
+>*see the following paper for a definiton of a "clan"
+>Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.
 
 The user provides a file of phylogenetic trees and a file containing the definitions of clans to be tested.
 
