@@ -89,7 +89,7 @@ int main (int argc, char *argv[])
 	    }
 	numclades--;
 	printf("number of clades to check = %d\n", numclades);
-	/*for(i=0; i<numclades; i++) fprintf(outfile, "\tClade %d", i);*/
+	for(i=0; i<numclades; i++) fprintf(outfile, "\tClade %d", i+1);
 	fprintf(outfile, "\n");
 
 	rewind(cladefile);
@@ -131,7 +131,7 @@ int main (int argc, char *argv[])
 	    numtrees++;
 	    }
 	numtrees--;
-	printf("number of trees to check =%d\n",numtrees);
+	printf("number of trees to check = %d\n",numtrees);
 	rewind(treefile);
 
 	/* define the trees array */
