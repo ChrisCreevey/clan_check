@@ -14,9 +14,9 @@ The software will also return a 1 if the none of the taxa from the clade are fou
 A "0" means that two or more of the taxa from that clade were found and they were not monophyletic.
 
 ### But... why?
-This is designed for large-scale phylogenomic analyses where the user may have thousands of phylogenetic trees. While every effort may have been taken to ensure that the best orthlogs have been chosen, sometimes due to hidden paralogy it is not easy to get the choise right.
+This is designed for large-scale phylogenomic analyses where the user may have thousands of phylogenetic trees. While every effort may have been taken to ensure that the best orthlogs have been chosen, sometimes due to hidden paralogy it is not easy to get the choice right.
 
-In these cases, the only evidence that the gene family may be problematic is when the resulting phylogeentic tree is incorrect.
+In these cases, the only evidence that the gene family may be problematic is when the resulting phylogeentic tree is "incorrect".
 
 One way to test for "problematic" gene families is to look for "incontrovertible relationships" that are not part of the question being asked in the study, but without doubt should exist if the taxa are in the tree.
 
@@ -29,6 +29,13 @@ Clade_check searches for these instances.
 If given many such clades to check, researchers can assess the number of these clades that are violated and decide on the weight of evidence necessary to remove of re-visit the analysis of that gene family.
 
 Care must be taken choosing the clades to be tested and in the designing of the study, to include taxa that allows this test to be made.
+
+You can provide trees and clades of any size and `clade_check` will search for the appropriate sub-set of the clades defined.
+
+For example: 
+>if you have a tree with `(A,B,(C,D));` and a clade definition of `C D E`, clade_check will search for monophylies of `C` and `D` only. 
+
+If only 1 of the taxa from a clade are in the tree, clade_check will assume that the clade is not violated, and return a "1" for that test (see output files detail below).
 
 ## Installation
 
@@ -63,6 +70,8 @@ Two example files are provided:
 (((a,(b,(c,d))),f),e);
 (((a,(b,(e,d))),c),g);
 ```
+These trees can be rooted or unrooted. `clade_check` will unroot all rooted trees before carrying out the analysis.
+
 
 2) `clades.txt` which contains the clades to be tested (one clade per line, with the taxa sperated by spaces)
 
