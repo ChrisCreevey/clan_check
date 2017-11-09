@@ -1,5 +1,5 @@
 # clan_check
-Check trees for compatibility with defined monophyletic [edit - not right terminology ] groups - "The incontrovertible clan test" 
+Check trees for compatibility with defined monophyletic [edit - not right terminology ] groups - "The incontestable clan test" 
 
 ## Background
 ###What does it do?
@@ -15,29 +15,29 @@ The output is a list for all the trees of each clan using a scoring of 1 or 0 wh
 
 The software will also return a 1 if the none of the taxa from the clan are found in the tree, or if only 1 of the taxa are found.
 
-A "0" means that two or more of the taxa from that clan were found and they were not monophyletic.
+A "0" means that two or more of the taxa from that clan were found and they were not in a clan (i.e. they were not together to the exclusion of all other taxa on the tree).
 
 ### But... why?
 This is designed for large-scale phylogenomic analyses where the user may have thousands of phylogenetic trees. While every effort may have been taken to ensure that the best orthlogs have been chosen, sometimes due to hidden paralogy it is not easy to get the choice right.
 
-In these cases, the only evidence that the gene family may be problematic is when the resulting phylogeentic tree is "incorrect".
+In these cases, the only evidence that the gene family may be problematic is when the resulting phylogeentic tree is incorrect for known or "incontestable" groups.
 
-One way to test for "problematic" gene families is to look for "incontrovertible relationships" that are not part of the question being asked in the study, but without doubt should exist if the taxa are in the tree.
+This involves looking for "incontestable relationships" that are not part of the question being asked in the study, but without doubt should exist if the taxa are in the tree.
 
-An example of this is, if I was carrying out a phylogenomic study of the fishes and used several mammals as an outgroup, then I should never expect the mammal clan to be paraphyletic [edit - whats the equivalent of paraphyly for a clan?].
+An example of this is, if a phylogenomic study involved the analysis of the relationships of the birds and used several mammals as an outgroup, then mammals would always be expected to group together.
 
-In this case the mammals are an incontrovertible clan. If the mammals are paraphyletic with the fishes, then it is very likely that one of the internal branches of the tree represents a duplication and not a speciation event, and so they are not all orthologs.
+In this case the mammals are an incontestable clan. If the mammals do not group together, then it is very likely that one of the internal branches of the tree represents a duplication and not a speciation event, and so some of the genes in the family may not be orthologs.
 
-Clan_check searches for these instances.
+`Clan_check` searches for these instances.
 
-If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove or re-visit the analysis of that gene family.
+If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove or re-visit the analysis of any gene families.
 
-Care must be taken choosing the clans to be tested and in the designing of the study, to include taxa that allows this test to be made.
+Care must be taken choosing the clans to be tested and in the design of the study to include taxa that allows this test to be made.
 
 You can provide trees and clans of any size and `clan_check` will search for the appropriate sub-set of the clans defined.
 
 For example: 
->if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clan_check will search for monophylies of `C` and `D` only. 
+>if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clan_check will search for clans containing `C` and `D` only. 
 
 If only 1 of the taxa from a clan are in the tree, clan_check will assume that the clan is not violated, and return a "1" for that test (see output files detail below).
 
@@ -64,7 +64,7 @@ Usage: `clan_check -f [phylip formatted tree file] -c [clan file] `
 
   Where: [phylip formatted tree file] is a phylip formatted file of trees to be assessed
   
-  [clan file] is a file lists of taxa in each line (space seperated) that are to be checked for monophylies.
+  [clan file] is a file that contains lists of taxa in each line (space seperated) that are to be checked for clans.
   
 Two example files are provided:
 
@@ -90,16 +90,17 @@ g d
 
 The output will be named `[phylip formatted tree file].scores.txt` and will have the following format:
 
-```
-Tree number size    Clan 1 Clan 2 Clan 3 Clan 4 Clan 5 Clan 6
-Tree 1      6       1       1       0       1       1       1
-Tree 2      6       0       1       0       1       1       1
-```
+
+|Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 |
+|------------|------|--------|--------|--------|--------|--------|--------|
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | 1 |
+|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 |
+
 Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file.
 
 In this example Clan 3 defined as having the monophyly of "c d a" was violated in both tree 1 and tree 2.
 
-In this result Tree 2 violated 2 of the clans and tree 1 violoated 1.
+Overall, Tree 2 violated 2 of the clans and tree 1 violoated 1.
 
 ## Caveats
 
