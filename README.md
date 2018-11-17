@@ -73,6 +73,7 @@ Two example files are provided:
 ```
 (((a,(b,(c,d))),f),e);
 (((a,(b,(e,d))),c),g);
+((a,(b,(e,d))),c);
 ```
 These trees can be rooted or unrooted. `clan_check` will unroot all rooted trees before carrying out the analysis.
 
@@ -93,14 +94,23 @@ The output will be named `[phylip formatted tree file].scores.txt` and will have
 
 |Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 |
 |------------|------|--------|--------|--------|--------|--------|--------|
-|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | 1 |
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? |
 |Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 |
+|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? |
 
 Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file.
 
-In this example Clan 3 defined as having the monophyly of "c d a" was violated in both tree 1 and tree 2.
+A "1" in the table means that this tree did not violate this clan.
+A "0" in the table means that this tree violated this clan.
+A "?" in the table means that there were not enough taxa from the Clan in this tree to carry out the test (minimum required is 2 taxa).
 
-Overall, Tree 2 violated 2 of the clans and tree 1 violoated 1.
+All three trees did not contain Clan 3, (c d a) despite all three trees containing all three taxa 
+
+Both tree 2 and tree 3 did not contain clan 1 (c d b), despite both trees containing all three taxa
+
+We could not test Clan 6 (g d) against Tree 1 or Tree 3 as neither of those trees had taxon "g".
+
+
 
 ## Caveats
 
