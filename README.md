@@ -2,7 +2,9 @@
 Check trees for compatibility with defined monophyletic [edit - not right terminology ] groups - "The incontestable clan test" 
 
 ## Background
-###What does it do?
+
+### What does it do?
+
 Clan_check analyses single-copy phylogenetic trees to assess if they violate clans* defined by the user. 
 
 >*see the following paper for a definiton of a "clan"
@@ -18,6 +20,7 @@ The software will also return a 1 if the none of the taxa from the clan are foun
 A "0" means that two or more of the taxa from that clan were found and they were not in a clan (i.e. they were not together to the exclusion of all other taxa on the tree).
 
 ### But... why?
+
 This is designed for large-scale phylogenomic analyses where the user may have thousands of phylogenetic trees. While every effort may have been taken to ensure that the best orthlogs have been chosen, sometimes due to hidden paralogy it is not easy to get the choice right.
 
 In these cases, the only evidence that the gene family may be problematic is when the resulting phylogeentic tree is incorrect for known or "incontestable" groups.
@@ -100,16 +103,23 @@ The output will be named `[phylip formatted tree file].scores.txt` and will have
 
 Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file.
 
+### Interpreting the results
+
 A "1" in the table means that this tree did not violate this clan.
+
 A "0" in the table means that this tree violated this clan.
+
 A "?" in the table means that there were not enough taxa from the Clan in this tree to carry out the test (minimum required is 2 taxa).
 
-All three trees did not contain Clan 3, (c d a) despite all three trees containing all three taxa 
+So in the test data:
 
-Both tree 2 and tree 3 did not contain clan 1 (c d b), despite both trees containing all three taxa
+  * All three trees did not contain Clan 3, (c d a) despite all three trees containing all three taxa 
 
-We could not test Clan 6 (g d) against Tree 1 or Tree 3 as neither of those trees had taxon "g".
+  * Both tree 2 and tree 3 did not contain clan 1 (c d b), despite both trees containing all three taxa
 
+  * We could not test Clan 6 (g d) against Tree 1 or Tree 3 as neither of those trees had taxon "g".
+
+For each tree, you can express the number of Clans violated as a sum, percentage, or treat any violation as a reason to exlucde the tree from further analyses. It all depends on what question you are asking and the level of stringency you wish to apply.
 
 
 ## Caveats
