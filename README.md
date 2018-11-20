@@ -47,7 +47,7 @@ You can provide trees and clans of any size and `clan_check` will search for the
 For example: 
 >if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clan_check will search for clans containing `C` and `D` only. 
 
-If only 1 of the taxa from a clan are in the tree, clan_check will assume that the clan is not violated, and return a "1" for that test (see output files detail below).
+If 1 or none of the taxa from a clan are in the tree, clan_check will return a "?" for that test (see output files detail below).
 
 ## Why test Clans and not Monophyletic Clades?
 
