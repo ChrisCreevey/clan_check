@@ -1,5 +1,5 @@
 # clan_check
-Check trees for compatibility with defined monophyletic [edit - not right terminology ] groups - "The incontestable clan test" 
+Check trees for compatibility with defined Clans - "The incontestable clan test" 
 
 ## Background
 
@@ -7,15 +7,18 @@ Check trees for compatibility with defined monophyletic [edit - not right termin
 
 Clan_check analyses single-copy phylogenetic trees to assess if they violate clans* defined by the user. 
 
->*see the following paper for a definiton of a "clan"
+>Clans are defined in the Paper: [Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.](https://www.cell.com/trends/ecology-evolution/fulltext/S0169-5347(07)00019-5) as:
 
->Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.
+>"*We propose the term ‘clan’ (from the Gaelic for family) as the unrooted analogue of monophyletic group or clade. There are two complementary clans for every nontrivial split or bipartition in an unrooted tree. Were the tree to be rooted, at least one of the two clans defined by a given split would necessarily be monophyletic. A trivial split in an unrooted tree (i.e. between one of the leaves (terminal taxa, OTUs) and all the others) yields a single clan.*"
+
+>See that paper for a more detailed explanation.
 
 The user provides a file of phylogenetic trees and a file containing the definitions of clans to be tested.
 
-The output is a list for all the trees of each clan using a scoring of 1 or 0 where 1 = the clan is found and 0 = the clan is violated.
-
-The software will also return a 1 if the none of the taxa from the clan are found in the tree, or if only 1 of the taxa are found.
+The output is a list for all the trees of each clan using a scoring of 1, 0 or ? where:
+  * 1 = the clan is found 
+  * 0 = the clan is violated
+  * ? = the clan could not be tested becuse too few taxa were present (see below for more details)
 
 A "0" means that two or more of the taxa from that clan were found and they were not in a clan (i.e. they were not together to the exclusion of all other taxa on the tree).
 
@@ -33,7 +36,9 @@ In this case the mammals are an incontestable clan. If the mammals do not group 
 
 `Clan_check` searches for these instances.
 
-If given many such clans to check, researchers can assess the number of these clans that are violated and decide on the weight of evidence necessary to remove or re-visit the analysis of any gene families.
+If given many such clans to check, researchers can assess the number of these clans that are violated* and decide on the weight of evidence necessary to remove or re-visit the analysis of any gene families.
+
+>* Note: that when we refer to a "violation" of a Clan, this implies that at least 2 taxa from the clan were found in the tree, but they did not group together to the exclusion of everything else as defined by the Clan.
 
 Care must be taken choosing the clans to be tested and in the design of the study to include taxa that allows this test to be made.
 
@@ -43,6 +48,10 @@ For example:
 >if you have a tree with `(A,B,(C,D));` and a clan definition of `C D E`, clan_check will search for clans containing `C` and `D` only. 
 
 If only 1 of the taxa from a clan are in the tree, clan_check will assume that the clan is not violated, and return a "1" for that test (see output files detail below).
+
+## Why test Clans and not Monophyletic Clades?
+
+Most of the phlyogenetic reconstruction software used today output unrooted trees. This means that you cannot guaruntee that the resulting trees will be rooted correctly. If you can guaruntee that an outgroup is included in your analysis then you could root the resulting trees and test for monophyletic clades. However when dealing with phylogeneomic-scale datasets, this may not be possible (as quite often there will be representatatives of gene famililes missing from some species). Testing for Clans removes this problem.
 
 ## Installation
 
@@ -113,11 +122,12 @@ A "?" in the table means that there were not enough taxa from the Clan in this t
 
 So in the test data:
 
-  * All three trees did not contain Clan 3, (c d a) despite all three trees containing all three taxa 
+  * All three trees violated Clan 3 (c d a). i.e. Despite all three trees containing all three taxa from the clan they did not group together to the exclusions of everything else. 
 
-  * Both tree 2 and tree 3 did not contain clan 1 (c d b), despite both trees containing all three taxa
+  * Both tree 2 and tree 3 violated clan 1 (c d b). i.e. Despite both tree 2 and 3 containing all three taxa from the clan
+they did not group together to the exclusion of everything else.
 
-  * We could not test Clan 6 (g d) against Tree 1 or Tree 3 as neither of those trees had taxon "g".
+  * We could not test Clan 6 (g d) against Tree 1 or Tree 3 as neither of those trees had taxon "g" and we need a minimum of 2 taxa from a clan to be in a tree in order to test for violations.
 
 For each tree, you can express the number of Clans violated as a sum, percentage, or treat any violation as a reason to exlucde the tree from further analyses. It all depends on what question you are asking and the level of stringency you wish to apply.
 
