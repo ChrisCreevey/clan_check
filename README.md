@@ -97,6 +97,8 @@ It is advisable to copy "clan_check" to somewhere on your path (like `~/bin` ) i
 
 ## Usage
 
+### Running Clan_check
+
 Usage: `clan_check -f [phylip formatted tree file] -c [clan file] `
 
   Where: [phylip formatted tree file] is a phylip formatted file of trees to be assessed
@@ -125,6 +127,8 @@ c d
 c g a
 g d
 ```
+
+### Outputs
 
 The output will be named `[phylip formatted tree file].scores.txt` and will have the following format:
 
