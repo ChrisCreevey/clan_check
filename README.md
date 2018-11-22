@@ -16,6 +16,10 @@ Check trees for compatibility with defined Clans - "The incontestable clan test"
 
 [Usage](https://github.com/ChrisCreevey/clan_check#usage)
 
+- [Running Clan_check](https://github.com/ChrisCreevey/clan_check#running-clan_check)
+
+- [Outputs](https://github.com/ChrisCreevey/clan_check#outputs)
+
 - [Interpreting the results](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
 
 [Caveats](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
