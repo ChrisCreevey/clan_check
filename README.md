@@ -1,6 +1,12 @@
 # clan_check
 Check trees for compatibility with defined Clans - "The incontestable clan test" 
 
+Clan_check has been published as part of the study:
+
+Karen Siu-Ting, María Torres-Sánchez, Diego San Mauro, David Wilcockson, Mark Wilkinson, Davide Pisani, Mary J O’Connell, Christopher J Creevey, Inadvertent Paralog Inclusion Drives Artifactual Topologies and Timetree Estimates in Phylogenomics, Molecular Biology and Evolution, Volume 36, Issue 6, June 2019, Pages 1344–1356, https://doi.org/10.1093/molbev/msz067
+
+Please cite this article if you use Clan_Check in your work.
+
 
 ## Table of Contents
 
