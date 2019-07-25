@@ -1,13 +1,45 @@
 # clan_check
 Check trees for compatibility with defined Clans - "The incontestable clan test" 
 
+__Clan_check has been published as part of the study:__
+
+*Karen Siu-Ting, María Torres-Sánchez, Diego San Mauro, David Wilcockson, Mark Wilkinson, Davide Pisani, Mary J O’Connell, Christopher J Creevey, __Inadvertent Paralog Inclusion Drives Artifactual Topologies and Timetree Estimates in Phylogenomics__, Molecular Biology and Evolution, Volume 36, Issue 6, June 2019, Pages 1344–1356, https://doi.org/10.1093/molbev/msz067*
+
+__Please cite this article if you use Clan_Check in your work.__
+
+
+## Table of Contents
+
+[Background](https://github.com/ChrisCreevey/clan_check#background)
+
+- [What does it do?](https://github.com/ChrisCreevey/clan_check#what-does-it-do)
+
+- [But... why?](https://github.com/ChrisCreevey/clan_check#but-why)
+
+- [Why test Clans and not Monophyletic Clades?](https://github.com/ChrisCreevey/clan_check#why-test-clans-and-not-monophyletic-clades)
+
+[Installation](https://github.com/ChrisCreevey/clan_check#installation)
+
+[Usage](https://github.com/ChrisCreevey/clan_check#usage)
+
+- [Running Clan_check](https://github.com/ChrisCreevey/clan_check#running-clan_check)
+
+- [Outputs](https://github.com/ChrisCreevey/clan_check#outputs)
+
+- [Interpreting the results](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
+
+[Caveats](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
+
+
+
+
 ## Background
 
 ### What does it do?
 
 Clan_check analyses single-copy phylogenetic trees to assess if they violate clans* defined by the user. 
 
->Clans are defined in the Paper: [Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.](https://www.cell.com/trends/ecology-evolution/fulltext/S0169-5347(07)00019-5) as:
+>*Clans are defined in the Paper: [Wilkinson, M., McInerney, J.O., Hirt, R.P., Foster, P.G. and Embley, T.M., 2007. Of clades and clans: terms for phylogenetic relationships in unrooted trees. Trends in ecology & evolution, 22(3), pp.114-115.](https://www.cell.com/trends/ecology-evolution/fulltext/S0169-5347(07)00019-5) as:
 
 >"*We propose the term ‘clan’ (from the Gaelic for family) as the unrooted analogue of monophyletic group or clade. There are two complementary clans for every nontrivial split or bipartition in an unrooted tree. Were the tree to be rooted, at least one of the two clans defined by a given split would necessarily be monophyletic. A trivial split in an unrooted tree (i.e. between one of the leaves (terminal taxa, OTUs) and all the others) yields a single clan.*"
 
@@ -32,7 +64,7 @@ This involves looking for "incontestable relationships" that are not part of the
 
 An example of this is, if a phylogenomic study involved the analysis of the relationships of the birds and used several mammals as an outgroup, then mammals would always be expected to group together.
 
-In this case the mammals are an incontestable clan. If the mammals do not group together, then it is very likely that one of the internal branches of the tree represents a duplication and not a speciation event, and so some of the genes in the family may not be orthologs.
+In this case the mammals are an incontestable clan. If the mammals do not group together, then it is very likely that one of the internal branches of the tree represents a duplication and not a speciation event and so some of the genes in the family may not be orthologs.
 
 `Clan_check` searches for these instances.
 
@@ -53,6 +85,9 @@ If 1 or none of the taxa from a clan are in the tree, clan_check will return a "
 
 Most of the phlyogenetic reconstruction software used today output unrooted trees. This means that you cannot guaruntee that the resulting trees will be rooted correctly. If you can guaruntee that an outgroup is included in your analysis then you could root the resulting trees and test for monophyletic clades. However when dealing with phylogeneomic-scale datasets, this may not be possible (as quite often there will be representatatives of gene famililes missing from some species). Testing for Clans removes this problem.
 
+Furthermore, you may want to define a Clan that may not naturally form a clade in a rooted tree. An example of this would be including the nested earliest diverging species of group which do not form a clade in a rooted tree, but  form a Clan in an unrooted tree.
+
+
 ## Installation
 
 To install the software download the file "clan_check.c" (or if you have git installed use the command:
@@ -71,6 +106,8 @@ It is advisable to copy "clan_check" to somewhere on your path (like `~/bin` ) i
 
 
 ## Usage
+
+### Running Clan_check
 
 Usage: `clan_check -f [phylip formatted tree file] -c [clan file] `
 
@@ -100,6 +137,8 @@ c d
 c g a
 g d
 ```
+
+### Outputs
 
 The output will be named `[phylip formatted tree file].scores.txt` and will have the following format:
 
