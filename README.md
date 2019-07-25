@@ -28,6 +28,8 @@ __Please cite this article if you use Clan_Check in your work.__
 
 - [Interpreting the results](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
 
+- [Bootstrap information](https://github.com/ChrisCreevey/clan_check#Bootstrap-information)
+
 [Caveats](https://github.com/ChrisCreevey/clan_check#interpreting-the-results)
 
 
@@ -143,21 +145,21 @@ g d
 The output will be named `[phylip formatted tree file].scores.txt` and will have the following format:
 
 
-|Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 |
-|------------|------|--------|--------|--------|--------|--------|--------|
-|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? |
-|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 |
-|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? |
+|Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 | boot_average |	boot_max |	boot_min |	boot_stdev |
+|------------|------|--------|--------|--------|--------|--------|--------|--------------|----------|----------|------------|
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
+|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
+|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
 
-Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file.
+Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file, `boot_average` is the average bootstrap support at the internal branches of the tree, `boot_max` is the maximum bootstrap support found in the tree, `boot_min` is the minimum bootstrap support found in the tree and `boot_stdev` is the standard deviation of the bootstrap suports found in the tree.
 
 ### Interpreting the results
 
-A "1" in the table means that this tree did not violate this clan.
+A "1" in a Clan column  means that this tree did not violate this clan.
 
-A "0" in the table means that this tree violated this clan.
+A "0" in a Clan column  means that this tree violated this clan.
 
-A "?" in the table means that there were not enough taxa from the Clan in this tree to carry out the test (minimum required is 2 taxa).
+A "?" in a Clan column  means that there were not enough taxa from the Clan in this tree to carry out the test (minimum required is 2 taxa).
 
 So in the test data:
 
@@ -170,10 +172,32 @@ they did not group together to the exclusion of everything else.
 
 For each tree, you can express the number of Clans violated as a sum, percentage, or treat any violation as a reason to exlucde the tree from further analyses. It all depends on what question you are asking and the level of stringency you wish to apply.
 
+### Bootstrap information
+
+The information on the bootstrap supports is provided to allow users to assess whetherr the violation of clades by any tree may be related to phylogenetic support.
+
+In the example above there werre no boostrap supports on the tree, so all numbers were returned as zero, when this analysis is run usin as input the provided example file containing boostraps `trees_wboots.ph`, containing the following information:
+
+```
+(((a,(b,(c,d)100)100)100,f)100,e);
+(((a,(b,(e,d)20)30)0,c)100,g);
+((a,(b,(e,d)2)10)20,c);
+```
+the following results are returned:
+
+|Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 | boot_average |	boot_max |	boot_min |	boot_stdev |
+|------------|------|--------|--------|--------|--------|--------|--------|--------------|----------|----------|------------|
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? | 100.000000 |	100.000000 |	100.000000 |	0.000000 |
+|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 | 37.500000 |	100.000000 |	0.000000 |	37.666298 |
+|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? | 10.666667 |	20.000000 | 2.000000 |	7.363574 |
+
+This may change our interpretation of the previous results as the violation of Clan 3 in Tree 1 may considered more robust as all branches have 100% support, compared to the violation of Clan 3 in Tree 3 where the average bootstrap support was just 10%. 
+
+It is left up to the user to interpret this information in the context of their data and the hypothesis being addressed.
 
 ## Caveats
 
-This tool will work with phylogenies with branch lengths and node labels (like bootstrap supports) and ignores both. However it assumes that there are no other modifications to the standard phylip formatting. It does not work with tree labels (in "[]" after the ";" in the tree).
+This tool will work with phylogentic trees with branch lengths and treats node labels as phylogenetic supports. However it assumes that there are no other modifications to the standard phylip formatting. It does not work with tree labels (in "[]" after the ";" in the tree).
 
 
 
