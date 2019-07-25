@@ -22,12 +22,14 @@
 
 
 void unroottree(char * tree);
+void assess_bootstraps(char * tree, float * average, float * max, float * min, float * stdev );
 
 int main (int argc, char *argv[])
   {
   char *treefilename=NULL, *cladefilename=NULL, outfilename[10000], c, **clades=NULL, **trees=NULL, *tree=NULL, *constraint=NULL, taxa[1000][1000], clanlist[1000][1000], *token=NULL, string[1000], *testtree=NULL, treename[1000];
   FILE *treefile=NULL, *cladefile=NULL, *outfile=NULL;
   int fflag=0, cflag=0, i=0, j=0, k=0, g=0, l=0, m=0, n=0, numfails=0, numclades=0, numtrees=0, linelength=0, treelength=0, numtaxa=0, numintree=0, numinconstraint=0, foundclade = FALSE, foundtaxa=FALSE;
+  float boot_average, boot_max, boot_min, boot_stdev;
 
   if(argc < 2)
   	{
@@ -90,7 +92,7 @@ int main (int argc, char *argv[])
 	numclades--;
 	printf("number of clans to check = %d\n", numclades);
 	for(i=0; i<numclades; i++) fprintf(outfile, "\tClan %d", i+1);
-	fprintf(outfile, "\n");
+	fprintf(outfile, "\tboot_average\tboot_max\tboot_min\tboot_stdev\n");
 
 	rewind(cladefile);
 
@@ -392,6 +394,9 @@ int main (int argc, char *argv[])
 			g=0;
 
 			}
+		/* assess bootstrap supports */
+		assess_bootstraps( trees[k], &boot_average, &boot_max, &boot_min, &boot_stdev);
+		fprintf(outfile, "\t%f\t%f\t%f\t%f", boot_average, boot_max, boot_min, boot_stdev);
 		fprintf(outfile, "\n");
 		}
 	printf("finished\n");
@@ -588,5 +593,74 @@ void unroottree(char * tree)
         tree[i+1] = '\0';
         
         }
+    }
+
+void assess_bootstraps(char * tree, float * average, float * max, float * min, float * stdev )
+    {
+
+    int i=0, j=0, num_branches=0, boot_num=0;
+    float *boots, sum=0;
+    char number[100];
+
+    /* step 1 count how many branches in the tree */
+    while(tree[i] != ';')
+    	{
+    	if(tree[i] == ')')
+    		{
+    		num_branches++;
+    		}
+    	i++;
+    	}
+    num_branches--; /* we want to ignore the last parenthesis */
+    i=0;
+   /* printf("tree= %s\nnum_branches = %d\n",tree, num_branches); */
+
+
+    /* step 2 assign the array to hold the bootstrap supports */
+    boots=malloc(num_branches*sizeof(float));
+    for(i=0; i<num_branches; i++)
+    	boots[i]=0;
+    i=0;
+
+    /* step 3 scan tree and record the bootstraps into the boots array */
+    while(tree[i] != ';' && boot_num < num_branches)
+    	{
+    	if(tree[i] != ')') i++;
+    	else
+    		{
+    		i++;
+    		j=0;
+    		while(tree[i] != ',' && tree[i] != ':' && tree[i] != ')' && tree[i] != ';')
+    			{
+    			number[j] = tree[i];
+    			j++; i++;
+    			} 
+    		number[j] = '\0';
+    	/*	printf("j=%d\t%s\t%f\n", j, number, atof(number)); */
+    		boots[boot_num]=atof(number);
+    		boot_num++;
+    		}
+    	}
+  /*  for(i=0; i<num_branches; i++) printf ("%f\t", boots[i]);
+    printf("\n"); */
+
+    /* calculate mean, max, min and stdev of bootstraps of the tree */
+    *max=0; *min=100;
+    for(i=0; i<num_branches; i++)
+    	{	
+    	sum=sum+boots[i];
+    	if(boots[i] < *min) *min=boots[i];
+    	if(boots[i] > *max) *max=boots[i];
+    	}
+    *average=sum/(float)num_branches;
+
+    *stdev=0;
+    for(i=0; i<num_branches; i++)
+    	{	
+    	*stdev=*stdev+pow(fabs(boots[i]-*average),2);
+    	}
+    *stdev=sqrt(*stdev/num_branches);
+
+    free(boots);
     }
 
