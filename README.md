@@ -174,9 +174,9 @@ For each tree, you can express the number of Clans violated as a sum, percentage
 
 ### Bootstrap information
 
-The information on the bootstrap supports is provided to allow users to assess whetherr the violation of clades by any tree may be related to phylogenetic support.
+The information on the bootstrap supports is provided to allow users to assess whether the violation of clades by any tree may be related to phylogenetic support.
 
-In the example above there werre no boostrap supports on the tree, so all numbers were returned as zero, when this analysis is run usin as input the provided example file containing boostraps `trees_wboots.ph`, containing the following information:
+In the example above there were no boostrap supports on the tree, so all numbers were returned as zero, when this analysis is run using as input the provided example file containing boostraps `trees_wboots.ph`, containing the following information:
 
 ```
 (((a,(b,(c,d)100)100)100,f)100,e);
