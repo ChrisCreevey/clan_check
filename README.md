@@ -147,9 +147,9 @@ The output will be named `[phylip formatted tree file].scores.txt` and will have
 
 |Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 | boot_average |	boot_max |	boot_min |	boot_stdev |
 |------------|------|--------|--------|--------|--------|--------|--------|--------------|----------|----------|------------|
-|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
-|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
-|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 0 | ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
+|Tree 2 | 6 | 0 | 0 | 0 | 0 | 1 | 0 | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
+|Tree 3	| 5	| 0	| 0	| 0	| 0	| 1	| ? | 0.000000 |	0.000000 |	0.000000 |	0.000000 |
 
 Where `tree number` is in the same order as the input trees, `size` = the number of taxa in the tree, `Clan x` is the clan definied by the xth line of the clan file, `boot_average` is the average bootstrap support at the internal branches of the tree, `boot_max` is the maximum bootstrap support found in the tree, `boot_min` is the minimum bootstrap support found in the tree and `boot_stdev` is the standard deviation of the bootstrap suports found in the tree.
 
@@ -187,9 +187,9 @@ the following results are returned:
 
 |Tree number | size | Clan 1 | Clan 2 | Clan 3 | Clan 4 | Clan 5 | Clan 6 | boot_average |	boot_max |	boot_min |	boot_stdev |
 |------------|------|--------|--------|--------|--------|--------|--------|--------------|----------|----------|------------|
-|Tree 1 | 6 | 1 | 1 | 0 | 1 | 1 | ? | 100.000000 |	100.000000 |	100.000000 |	0.000000 |
-|Tree 2 | 6 | 0 | 1 | 0 | 1 | 1 | 1 | 37.500000 |	100.000000 |	0.000000 |	37.666298 |
-|Tree 3	| 5	| 0	| 1	| 0	| 1	| 1	| ? | 10.666667 |	20.000000 | 2.000000 |	7.363574 |
+|Tree 1 | 6 | 1 | 1 | 0 | 1 | 0 | ? | 100.000000 |	100.000000 |	100.000000 |	0.000000 |
+|Tree 2 | 6 | 0 | 0 | 0 | 0 | 1 | 0 | 37.500000 |	100.000000 |	0.000000 |	37.666298 |
+|Tree 3	| 5	| 0	| 0	| 0	| 0	| 1	| ? | 10.666667 |	20.000000 | 2.000000 |	7.363574 |
 
 This may change our interpretation of the previous results as the violation of Clan 3 in Tree 1 may considered more robust as all branches have 100% support, compared to the violation of Clan 3 in Tree 3 where the average bootstrap support was just 10%. 
 
