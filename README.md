@@ -191,7 +191,7 @@ the following results are returned:
 |Tree 2 | 6 | 0 | 0 | 0 | 0 | 1 | 0 | 37.500000 |	100.000000 |	0.000000 |	37.666298 |
 |Tree 3	| 5	| 0	| 0	| 0	| 0	| 1	| ? | 10.666667 |	20.000000 | 2.000000 |	7.363574 |
 
-This may change our interpretation of the previous results as the violation of Clan 3 in Tree 1 may considered more robust as all branches have 100% support, compared to the violation of Clan 3 in Tree 3 where the average bootstrap support was just 10%. 
+This may change our interpretation of the previous results as the violation of Clan 3 in Tree 1 may considered more robust as all branches have 100% support, compared to the violation of Clan 3 in Tree 3 where the average bootstrap support was just 10% suggesting that the violation may have been because of lack of phylogenetic support rather than because of a strong alternative signal.
 
 It is left up to the user to interpret this information in the context of their data and the hypothesis being addressed.
 
