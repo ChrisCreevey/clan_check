@@ -60,12 +60,12 @@ int main (int argc, char *argv[])
 		}	
 
 
-	if((treefile = fopen(treefilename, "r")) == '\0')   /* check to see if the file is there */
+	if((treefile = fopen(treefilename, "r")) == NULL)   /* check to see if the file is there */
 	    {                          /* Open the fundamental tree file */
 	    fprintf(stderr, "Error: Cannot open tree file %s\n", treefilename);
 	    exit(1);
 	    }
-	if((cladefile = fopen(cladefilename, "r")) == '\0')   /* check to see if the file is there */
+	if((cladefile = fopen(cladefilename, "r")) == NULL)   /* check to see if the file is there */
 	    {                          /* Open the fundamental tree file */
 	    fprintf(stderr, "Error: Cannot open clan file %s\n", cladefilename);
 	    exit(1);
@@ -73,7 +73,7 @@ int main (int argc, char *argv[])
 	outfilename[0] = '\0';
 	strcpy(outfilename, treefilename);
 	strcat(outfilename, ".scores.txt");
-	if((outfile = fopen(outfilename, "w")) == '\0')   /* check to see if the file is there */
+	if((outfile = fopen(outfilename, "w")) == NULL)   /* check to see if the file is there */
 	    {                          /* Open the fundamental tree file */
 	    fprintf(stderr, "Error: Cannot open output file %s\n", outfilename);
 	    exit(1);
@@ -357,7 +357,7 @@ int main (int argc, char *argv[])
 							  		strcat(string, " ");
 							  	/*	printf("looking for \"%s\" in %s\n", string, constraint); */
 							  		
-							  		if(strstr(constraint,string) == '\0')
+							  		if(strstr(constraint,string) == NULL)
 							  			{	
 							  		/*	printf("didn't find it\n"); */
 							  			foundtaxa=FALSE;
